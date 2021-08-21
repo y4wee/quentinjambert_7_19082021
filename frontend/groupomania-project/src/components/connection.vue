@@ -1,5 +1,9 @@
 <template>
   <div class="user">
+    <img alt="Vue logo" src="../assets/logo-groupomania.svg">
+    <p>
+      Bienvenue sur le réseau social interne de groupomania, créez, partagez et commentez afin de mieux nous connaitre au sain de l'entreprise !
+    </p>
 
     <div class="userConnection">
       <h1>Connectez vous</h1>
@@ -50,18 +54,7 @@ div, form {
   align-items: center;
   flex-direction: column;
 }
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+img {
+  height: 500px;
 }
 </style>
