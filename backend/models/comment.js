@@ -16,30 +16,6 @@ const Comment = sequelize.define('Comment', {
         primaryKey: true,
         autoIncrement: true
     },
-    user: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-        // creation foreign key
-        references: {
-            // This is a reference to another model
-            model: User,
-      
-            // This is the column name of the referenced model
-            key: 'user_id'
-          }
-    },
-    article: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-        // creation foreign key
-        references: {
-            // This is a reference to another model
-            model: Article,
-      
-            // This is the column name of the referenced model
-            key: 'article_id'
-          }
-    },
     commentaire: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -48,6 +24,13 @@ const Comment = sequelize.define('Comment', {
 
 // `sequelize.define` also returns the model
 console.log(Comment === sequelize.models.Comment); // true
+
+//creation des foreign keys
+User.hasOne(Comment);
+Comment.belongsTo(User);
+
+Article.hasOne(Comment);
+Comment.belongsTo(Article);
 
 // crée la table si elle n'existe pas 
 Comment.sync()

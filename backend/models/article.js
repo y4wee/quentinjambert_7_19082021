@@ -9,23 +9,11 @@ const User = require('./user');
 // creation model Article
 const Article = sequelize.define('Article', {
   // definition des attributs du model
-    article_id: {
+    id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
-    },
-    user: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-        // creation foreign key
-        references: {
-            // This is a reference to another model
-            model: User,
-      
-            // This is the column name of the referenced model
-            key: 'user_id'
-          }
     },
     titre: {
         type: DataTypes.STRING,
@@ -49,7 +37,11 @@ const Article = sequelize.define('Article', {
 // `sequelize.define` also returns the model
 console.log(Article === sequelize.models.Article); // true
 
+// creation foreign key
+User.hasOne(Article);
+Article.belongsTo(User);
+
 // crée la table si elle n'existe pas 
-Article.sync()
+Article.sync();
 
 module.exports = sequelize.model('Article', Article);

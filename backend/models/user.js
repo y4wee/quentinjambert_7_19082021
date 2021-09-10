@@ -30,9 +30,9 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    status: {
-        type: DataTypes.ENUM('salarie','moderateur'),
-        defaultValue: 'salarie'
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 });
 
