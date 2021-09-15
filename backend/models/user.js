@@ -1,13 +1,14 @@
 const { Sequelize, DataTypes } = require('sequelize');
-require('dotenv').config(); 
+require('dotenv').config();
 const sequelize = new Sequelize(process.env.DB_DATA, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
-    dialect: 'mysql'    
+    dialect: 'mysql'
 });
 
+// creation model User
 const User = sequelize.define('User', {
   // definition des attributs du model
-    user_id: {
+    id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
@@ -24,11 +25,14 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,
@@ -40,6 +44,6 @@ const User = sequelize.define('User', {
 console.log(User === sequelize.models.User); // true
 
 // crée la table si elle n'existe pas 
-User.sync()
+User.sync();
 
 module.exports = sequelize.model('User', User);

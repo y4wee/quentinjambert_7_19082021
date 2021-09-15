@@ -3,6 +3,9 @@ const express = require('express');
 const { Sequelize } = require('sequelize');
 const path = require('path');
 
+//importation des fichiers routes
+const userRoutes = require('./routes/user');
+
 // library express + var env.
 const app = express();
 require('dotenv').config(); 
@@ -33,5 +36,6 @@ app.use(express.urlencoded({ extended: true }));
 
 //declaration routes de l'api
 app.use('/images', express.static(path.join(__dirname, 'images'))); //dossier static pour ajout image
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
