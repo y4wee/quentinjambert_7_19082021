@@ -19,7 +19,7 @@ const Article = sequelize.define('Article', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    media_path: {
+    imageUrl: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
