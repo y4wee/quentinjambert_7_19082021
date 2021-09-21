@@ -38,7 +38,9 @@ const Article = sequelize.define('Article', {
 console.log(Article === sequelize.models.Article); // true
 
 // creation foreign key
-User.hasOne(Article);
+User.hasOne(Article, {
+    onDelete: 'CASCADE'
+});
 Article.belongsTo(User);
 
 // crée la table si elle n'existe pas 

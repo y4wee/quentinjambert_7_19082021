@@ -10,7 +10,7 @@ const Article = require('./article');
 // creation model Comment
 const Comment = sequelize.define('Comment', {
   // definition des attributs du model
-    comment_id: {
+    id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
@@ -26,7 +26,9 @@ const Comment = sequelize.define('Comment', {
 console.log(Comment === sequelize.models.Comment); // true
 
 //creation des foreign keys
-User.hasOne(Comment);
+User.hasOne(Comment, {
+    onDelete: 'CASCADE'
+});
 Comment.belongsTo(User);
 
 Article.hasOne(Comment, {

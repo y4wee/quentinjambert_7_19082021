@@ -6,6 +6,7 @@ const path = require('path');
 //importation des fichiers routes
 const userRoutes = require('./routes/user');
 const articleRoutes = require('./routes/article');
+const commentRoutes = require('./routes/comment');
 
 // library express + var env.
 const app = express();
@@ -39,5 +40,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images'))); //dossier static pour ajout image
 app.use('/api/auth', userRoutes);
 app.use('/api/publication', articleRoutes);
+app.use('/api/comments', commentRoutes);
 
 module.exports = app;
