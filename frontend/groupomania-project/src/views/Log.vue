@@ -3,46 +3,45 @@
     <div class="logLogo">
       <img alt="Vue logo" src="../assets/logo-log-white.svg">
     </div>
-    <p>
+    <p class="presentationSite">
       Bienvenue sur le réseau social interne de groupomania, créez, partagez et commentez afin de mieux vous connaitre au sain de l'entreprise !
     </p>
 
     <div class="userData">
-      <div class="userDataLogin">
-        <h2>Connectez vous</h2>
-        <form class="loginForm" method="post">
-          <div class="loginFormInput">
-            <label for="connectionEmail">Email :</label>
-            <input type="email" id="connectionEmail" name="connectionEmail" required>
+        <h2 v-if="mode == 'login'">Connectez vous</h2>
+        <h2 v-else>Inscrivez vous</h2>
+
+        <div class="loginForm">
+          <div class="formInput" v-if="mode == 'signup'">    
+            <input v-model="nom" type="text" name="name" placeholder="Nom" required>
           </div>
 
-          <div class="loginFormInput">
-            <label for="connectionPassword">Password :</label>
-            <input type="password" id="connectionPassword" name="connectionPassword" required>
+          <div class="formInput" v-if="mode == 'signup'">
+            <input v-model="prenom" type="text" name="firstName" placeholder="Prénom" required>
           </div>
-          
-          <input type="submit" value="Connection">
-        </form>
-      </div>
 
-      <div class="userDataSignup">
-        <h2>Inscrivez vous</h2>
-        <form class="signupForm" method="post">
-          <label for="inscriptionName">Nom</label>
-          <input type="text" id="inscriptionName" name="inscriptionName" required>
+          <div class="formInput">
+            <input v-model="email" type="email" name="email" placeholder="Email" required>
+          </div>
 
-          <label for="inscriptionFirstname">Prénom</label>
-          <input type="text" id="inscriptionFirstname" name="inscriptionFirstname" required>
+          <div class="formInput">
+            <input v-model="password" type="text" name="password" placeholder="Mot de passe" required>
+          </div>
 
-          <label for="inscriptionEmail">Email</label>
-          <input type="email" id="inscriptionEmail" name="inscriptionEmail" required>
+          <button v-if="mode == 'login'" class="formButton" @click="userLogin()">
+            Login
+          </button>
+          <button v-else class="formButton" @click="userCreating()">
+            Signup
+          </button>
 
-          <label for="inscriptionPassword">Password</label>
-          <input type="text" id="inscriptionPassword" name="inscriptionPassword" required>
-
-          <input type="submit" value="Validation">
-        </form>
-      </div>
+          <p v-if="mode == 'login'">
+            Vous n'êtes pas inscrit, <span @click="toggleMode()">cliquez ici</span>
+          </p>
+          <p v-else>
+            Vous êtes déja inscrit, <span @click="toggleMode()">cliquez ici</span>
+          </p>
+        </div>
     </div>
 
   </div>
@@ -57,35 +56,33 @@ export default {
   },
   data (){
     return {
-      logHidden: true,
-      logins: [
-        {
-          name: "Email",
-          type: "email"
-        },
-        {
-          name: "Password",
-          type: "Password"
-        }
-      ],
-      signups: [
-        {
-          name: "Nom",
-          type: "text"
-        },
-        {
-          name: "Prénom",
-          type: "text"
-        },
-        {
-          name: "Email",
-          type: "email"
-        },
-        {
-          name: "Password",
-          type: "Password"
-        }
-      ]
+      mode: 'login',
+      nom: "",
+      prenom: "",
+      email: "",
+      password: ""
+    }
+  },
+  methods: {
+    toggleMode: function() {
+      if(this.mode == 'login') {
+        this.mode = 'signup'
+      } else {
+        this.mode = 'login'
+      }
+    },
+
+    userLogin: function() {
+      console.log(this.email)
+    },
+
+    userCreating: function() {
+      this.$store.dispatch('userCreating', {
+        nom: this.nom,
+        prenom: this.prenom,
+        email: this.email,
+        password: this.password
+      })
     }
   }
 }
@@ -93,15 +90,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.user {
+  width: 100%;
+  min-height: calc(100vh - 50px);
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, rgba(230,230,230,1) 100%);
+  padding-bottom: 50px;
+}
 //banniere page log
 .logLogo {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   background-color: #FFD7D7;
-  height: 300px;
+  height: 250px;
   width: 100%;
   border-radius: 0% 100% 43% 57% / 100% 0% 100% 0% ;
+  box-shadow: 100px -20px 0px 15px rgb(255, 54, 54);
 
   img {
       width: 45%;
@@ -109,10 +113,10 @@ export default {
   }
 }
 
-p {
+.presentationSite {
   font-size: 1.5em;
   width: 700px;
-  margin: 80px auto;
+  margin: 40px auto;
   text-align: center;
 }
 
@@ -123,30 +127,37 @@ p {
   align-items: center;
   flex-direction: column;
   width: 700px;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   background-color: #FFD7D7;
   border: solid #FFD7D7 5px;
   border-radius: 12% 88% 12% 88% / 100% 0% 100% 0% ;
   overflow: hidden;
-
-  &Login {
-    
-  }
-
-  &Signup {
-
-  }
-
-  & form {
-    padding: 40px 0;
+  box-shadow: -5px 2px 0px 2px rgb(255, 54, 54),
+              -2px 2px 0px 0px rgb(255, 54, 54);
+}
+.loginForm {
+    width: 100%;
+    padding: 30px 0;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
+    & p {
+      margin: 30px 0 0 0;
+    }
+    & span {
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.1s ease-in-out;
+      &:hover {
+        color: rgb(255, 54, 54);
+      }
+    }
 }
-
+// h2 connexion et inscription
 h2 {
   display: flex;
   justify-content: center;
@@ -156,29 +167,41 @@ h2 {
   margin: 0;
 }
 
-.loginFormInput {
+//aspect des input formulaire
+.formInput {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 40px;
+  align-items: center;
+  height: 45px;
   width: 400px;
   margin: 10px 0;
-  border-bottom: solid 3px #FFD7D7;
-
-  & label {
-    width: 90px;
-    font-weight: bold;
-  }
-
+  background-color: rgb(230, 230, 230);
+  padding-left: 15px;
+  border-radius: 15px;
   & input {
-    width: 290px;
+    width: max-content;
     font-size: 1.2em;
     outline: none;
     border: none;
-    border-top: solid 3px #FFD7D7;
-    border-right: solid 3px #FFD7D7;
-    padding-top: 10px;
+    background-color: inherit;
   }
+}
+// boutons de validation formulaire
+.formButton {
+  width: 80px;
+  height: 80px;
+  margin-top: 20px;
+  border: dotted 4px #2c3e50;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 1em;
+  font-weight: bold;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
+      border-color: rgb(255, 54, 54);
+    }
 }
 
 </style>
