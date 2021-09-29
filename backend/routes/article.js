@@ -16,7 +16,7 @@ router.put('/:id', multer, articleCtrl.modifyArticle);
 
 router.get('/:id', articleCtrl.getOneArticle);
 
-router.get('/', articleCtrl.getAllArticles);
+router.get('/',auth, articleCtrl.getAllArticles);
 
 router.delete('/:id', articleCtrl.deleteOneArticle);
 

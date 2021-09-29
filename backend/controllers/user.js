@@ -39,7 +39,7 @@ exports.login = (req, res, next) => {
             token: jwt.sign(
               { userId: user._id },
               process.env.JWT_SECRET, // creation token de connexion
-              { expiresIn: '2h' }
+              { expiresIn: '24h' }
             )
           });
         })
@@ -50,7 +50,7 @@ exports.login = (req, res, next) => {
 
 // controlleur get pour page compte 
 exports.getOneUser = (req, res, next) => {
-    User.findByPk(req.body.userId)
+    User.findByPk(req.params.id)
         .then(user => {
             res.status(200).json({
                 nomExt: user.nom,

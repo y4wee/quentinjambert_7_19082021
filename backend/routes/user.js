@@ -14,8 +14,8 @@ router.post('/signup', validationPass, userCtrl.signup);
 
 router.post('/login', validationPass, userCtrl.login);
 
-router.get('/:id', userCtrl.getOneUser);
+router.get('/:id',auth, userCtrl.getOneUser);
 
-router.delete('/:id', validationPass, userCtrl.deleteOneUser);
+router.delete('/:id',auth, validationPass, userCtrl.deleteOneUser);
 
 module.exports = router;

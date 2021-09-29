@@ -25,7 +25,7 @@
           </div>
 
           <div class="formInput">
-            <input v-model="password" type="text" name="password" placeholder="Mot de passe" required>
+            <input v-model="password" type="password" name="password" placeholder="Mot de passe" required>
           </div>
 
           <button v-if="mode == 'login'" class="formButton" @click="userLogin()">
@@ -63,6 +63,12 @@ export default {
       password: ""
     }
   },
+  mounted: function() {
+    if(this.$store.state.user.userId != 0) {
+        this.$router.push('/home');
+        return;
+    }
+  },
   methods: {
     toggleMode: function() {
       if(this.mode == 'login') {
@@ -72,10 +78,6 @@ export default {
       }
     },
 
-    userLogin: function() {
-      console.log(this.email)
-    },
-
     userCreating: function() {
       this.$store.dispatch('userCreating', {
         nom: this.nom,
@@ -83,7 +85,30 @@ export default {
         email: this.email,
         password: this.password
       })
-    }
+      .then((res) => {
+        console.log(res);
+        this.userLogin();
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
+
+    userLogin: function() {
+      this.$store.dispatch('userLogin', {
+        email: this.email,
+        password: this.password
+      })
+      .then((res) => {
+        console.log(res);
+        this.$router.push('/home');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    },
+
+    
   }
 }
 </script>

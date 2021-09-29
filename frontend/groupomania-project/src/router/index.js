@@ -3,7 +3,7 @@ import Log from '../views/Log.vue'
 import About from '../views/About.vue'
 import Compte from '../views/Compte.vue'
 import Creation from '../views/Creation.vue'
-import Publication from '../views/Publication.vue'
+import Home from '../views/Home.vue'
 
 const routes = [
   {
@@ -12,9 +12,9 @@ const routes = [
     component: Log
   },
   {
-    path: '/publication',
-    name: 'Publication',
-    component: Publication
+    path: '/home',
+    name: 'Home',
+    component: Home
   },
   {
     path: '/creation',
