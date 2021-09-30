@@ -7,13 +7,17 @@
 </template>
 
 <style lang="scss">
+// #091f43 text bleu
+// #122441 bleu
+// #d1515a rose
+// #aeaeb1 gris
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #091f43;
   min-height: 100vh;
-}
+  }
 
 body {
   margin: 0;
@@ -28,7 +32,7 @@ body {
 #nav {
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #091f43;
 
     &.router-link-exact-active {
       color: #42b983;

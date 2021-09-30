@@ -11,7 +11,7 @@
         <h2 v-if="mode == 'login'">Connectez vous</h2>
         <h2 v-else>Inscrivez vous</h2>
 
-        <div class="loginForm">
+        <div class="logForm">
           <div class="formInput" v-if="mode == 'signup'">    
             <input v-model="nom" type="text" name="name" placeholder="Nom" required>
           </div>
@@ -28,11 +28,11 @@
             <input v-model="password" type="password" name="password" placeholder="Mot de passe" required>
           </div>
 
-          <button v-if="mode == 'login'" class="formButton" @click="userLogin()">
+          <button class="formButton" v-if="mode == 'login'" type="button" @click="userLogin()">
             Login
           </button>
-          <button v-else class="formButton" @click="userCreating()">
-            Signup
+          <button class="formButton" v-else type="button" @click="userCreating()">
+            Login
           </button>
 
           <p v-if="mode == 'login'">
@@ -118,7 +118,7 @@ export default {
 .user {
   width: 100%;
   min-height: calc(100vh - 50px);
-  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, rgba(230,230,230,1) 100%);
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
   padding-bottom: 50px;
 }
 //banniere page log
@@ -126,11 +126,11 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: #FFD7D7;
+  background-color: #122441;
   height: 250px;
   width: 100%;
   border-radius: 0% 100% 43% 57% / 100% 0% 100% 0% ;
-  box-shadow: 100px -20px 0px 15px rgb(255, 54, 54);
+  box-shadow: 100px -20px 0px 15px #d1515a;
 
   img {
       width: 45%;
@@ -153,14 +153,14 @@ export default {
   flex-direction: column;
   width: 700px;
   margin: 0 auto;
-  background-color: #FFD7D7;
-  border: solid #FFD7D7 5px;
+  background-color: #122441;
+  border: solid #122441 5px;
   border-radius: 12% 88% 12% 88% / 100% 0% 100% 0% ;
   overflow: hidden;
-  box-shadow: -5px 2px 0px 2px rgb(255, 54, 54),
-              -2px 2px 0px 0px rgb(255, 54, 54);
+  box-shadow: -5px 2px 0px 2px #d1515a,
+              -2px 2px 0px 0px #d1515a;
 }
-.loginForm {
+.logForm {
     width: 100%;
     padding: 30px 0;
     background-color: white;
@@ -178,7 +178,7 @@ export default {
       user-select: none;
       transition: color 0.1s ease-in-out;
       &:hover {
-        color: rgb(255, 54, 54);
+        color: #d1515a;
       }
     }
 }
@@ -190,6 +190,7 @@ h2 {
   width: 700px;
   height: 50px;
   margin: 0;
+  color: white;
 }
 
 //aspect des input formulaire
@@ -215,17 +216,17 @@ h2 {
   width: 80px;
   height: 80px;
   margin-top: 20px;
-  border: dotted 4px #2c3e50;
+  border: dotted 4px #122441;
   border-radius: 50%;
   background-color: white;
   font-size: 1em;
   font-weight: bold;
-  color: #2c3e50;
+  color: #122441;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
     &:hover {
       transform: scale(1.1);
-      border-color: rgb(255, 54, 54);
+      border-color: #d1515a;
     }
 }
 

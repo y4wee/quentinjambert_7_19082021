@@ -58,21 +58,6 @@ export default {
         background-color: white;
         margin-top: 100px;
         box-shadow: 0 10px 10px 6px #d1515a;
-        &Head {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            background-color: rgba(249,249,249,0.8);
-            position: absolute;
-            left: 0;
-            right: 0;
-            & h2 {
-                width: fit-content;
-                user-select: none;
-            }
-        }
-        
     }
 }
 </style>
