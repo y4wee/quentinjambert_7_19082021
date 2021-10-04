@@ -52,7 +52,7 @@ export default {
     position: fixed;
     z-index: 1;
     width: 100%;
-    height: 100px;
+    height: 70px;
     background-color: #122441;
     box-shadow: 0 0 0px 30px #d1515a;
 
@@ -67,7 +67,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100px;
+        height: 70px;
     }
 
     // sections de la nav / home create et user
@@ -76,7 +76,7 @@ export default {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        height: 95px;
+        height: 65px;
         min-width: 125px;
         color: white;
         transition: all 0.2s ease-in-out;
@@ -85,14 +85,14 @@ export default {
         text-decoration: none;
         // icon des sections
         & .icon {
-            font-size: 2em;
+            font-size: 1.8em;
             transform: translateY(16px);
             transition: all 0.2s ease-in-out;
         }
         // info sous l'icone des sections
         &Info {
             opacity: 0;
-            font-size: 1.5em;
+            font-size: 1.3em;
             margin-top: 5px;
             transform: translateY(16px);
             transition: all 0.2s ease-in-out;
@@ -123,7 +123,7 @@ export default {
         &Hidden {
             position: absolute;
             right: 10px;
-            top: 97px;
+            top: 67px;
             display: flex;
             flex-direction: column;
             align-items: center;

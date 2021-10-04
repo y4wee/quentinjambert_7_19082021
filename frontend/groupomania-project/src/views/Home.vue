@@ -1,20 +1,29 @@
 <template>
 
     <div class="home">
+
         <Nav />
 
-        <div class="homeList">
-            <div class="homeListHead">
-                <h2>Quoi de neuf {{ user.prenom }} ?</h2>
+        <div class="homeMain">
+            <div class="homeMainHead">
+                <h2 v-if="scrollMode == false">Quoi de neuf {{ user.prenom }} ?</h2>
+            </div>
+            <div class="homeMainScrollback" v-if="scrollMode" @click="goBackTop()">
+                <i class="fas fa-arrow-up"></i>
             </div>
 
-            <Article 
-            v-for="article in articles"
-            :key="article.id"
-            :article="article"
-            />
+            <div class="homeMainList" @scroll="scrollbackMode()">
+                <Article 
+                v-for="article in articles"
+                :key="article.id"
+                :article="article"
+                />
+            </div>
 
+            
         </div>
+
+
     </div>
 
 </template>
@@ -30,6 +39,11 @@ export default {
         Nav,
         Article
     },
+    data() {
+        return {
+            scrollMode: false,
+        }
+    },
     mounted: function() {
         if(this.$store.state.user.userId === 0) {
             this.$router.push('/');
@@ -42,6 +56,20 @@ export default {
             user: 'user',
             articles: 'articles'
         }),
+    },
+    methods: {
+        // fait apparaitre le bouton scrollback 
+        scrollbackMode: function() {
+            if ( document.querySelector(".homeMainList").scrollTop > 400) {
+                this.scrollMode = true;
+            } else {
+                this.scrollMode = false;
+            }
+        },
+        // permet de remonter au top de la page grace au scrollback
+        goBackTop: function() {
+            document.querySelector(".homeMainList").scrollTop = 0;
+        },
     }
 }
 </script>
@@ -55,19 +83,24 @@ export default {
     min-height: 100vh;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
 
-    &List {
+    &Main {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         position: relative;
         z-index: 2;
         width: 800px;
-        min-height: calc(100vh - 100px);
+        height: calc(100vh - 70px);
         background-color: white;
-        margin-top: 100px;
+        margin-top: 70px;
         box-shadow: 0 10px 10px 6px #d1515a;
+        overflow: hidden;
         &Head {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100px;
+            height: 50px;
+            box-shadow: 0 10px 10px 6px rgba(249,249,249,0.97);
             background-color: rgba(249,249,249,0.97);
             position: absolute;
             left: 0;
@@ -76,6 +109,35 @@ export default {
                 width: fit-content;
                 user-select: none;
             }
+        }
+        &List {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 800px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #aeaeb1;
+                border-radius: 30px;
+            }
+        }
+        &Scrollback {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 5px;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            background-color: #122441;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
         }
     }
 }
