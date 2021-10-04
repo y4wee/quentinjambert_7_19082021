@@ -70,6 +70,7 @@ export default {
     }
   },
   methods: {
+    // fonction pour changer mode login ou signup
     toggleMode: function() {
       if(this.mode == 'login') {
         this.mode = 'signup'
@@ -77,7 +78,7 @@ export default {
         this.mode = 'login'
       }
     },
-
+    // fonction pour creer un user
     userCreating: function() {
       this.$store.dispatch('userCreating', {
         nom: this.nom,
@@ -87,13 +88,13 @@ export default {
       })
       .then((res) => {
         console.log(res);
-        this.userLogin();
+        this.userLogin(); // si ok, lance la fonction login
       })
       .catch((error) => {
         console.error(error);
       })
     },
-
+    // fonction pour se connecter, envoie les donné user au backend
     userLogin: function() {
       this.$store.dispatch('userLogin', {
         email: this.email,

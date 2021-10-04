@@ -8,9 +8,12 @@
                 <h2>Quoi de neuf {{ user.prenom }} ?</h2>
             </div>
 
-            <div class="homeListCarte">
+            <Article 
+            v-for="article in articles"
+            :key="article.id"
+            :article="article"
+            />
 
-            </div>
         </div>
     </div>
 
@@ -18,12 +21,14 @@
 
 <script>
 import Nav from '../components/Nav.vue';
+import Article from '../components/Article.vue';
 import { mapState } from 'vuex';
 
 export default {
     name: 'Home',
     components: {
-        Nav
+        Nav,
+        Article
     },
     mounted: function() {
         if(this.$store.state.user.userId === 0) {
@@ -63,7 +68,7 @@ export default {
             justify-content: center;
             align-items: center;
             height: 100px;
-            background-color: rgba(249,249,249,0.8);
+            background-color: rgba(249,249,249,0.97);
             position: absolute;
             left: 0;
             right: 0;
@@ -72,7 +77,6 @@ export default {
                 user-select: none;
             }
         }
-        
     }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 
-<div class="nav">
+<header class="nav">
     <div class="navLeft">
         <img src="../assets/logo-log-white.svg" />
 
@@ -25,7 +25,7 @@
     </div>
 
         
-</div>
+</header>
 
 </template>
 
