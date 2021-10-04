@@ -28,6 +28,7 @@ const store = createStore({
         status: '',
         user: user,
         articles: [],
+        comments: [],
     },
     mutations: {
         // gere state user
@@ -45,6 +46,9 @@ const store = createStore({
         // gere state article
         setArticle: function(state, articles) {
             state.articles = articles;
+        },
+        setComment: function(state, comments) {
+            state.comments = comments
         }
     },
     actions: {
@@ -74,6 +78,19 @@ const store = createStore({
                 });
             })
         },
+        // requete get one user
+        userGetOne: ({commit}, userData) => {
+            commit;
+            return new Promise((resolve, reject) => {
+                instance.get(`/auth/${userData.id}`)
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
         // requete get all article
         articleGetAll: ({commit}) => {
             commit;
@@ -85,7 +102,34 @@ const store = createStore({
             .catch((error) =>  {
                 console.error(error);
             })
-        }
+        },
+        // requete Post pour creer un commentaire 
+        // requete post user Signup
+        commentPost: ({commit}, commentData) => {
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.post('/comments', commentData)
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
+        // requete get all comments d'un article en fonction de l'id de ce dernier
+        commentGetAll: ({commit}, articleId) => {
+            return new Promise((resolve, reject) => {
+                instance.get(`/comments/${articleId}`)
+                .then(function (res) {
+                    commit('setComment', res.data)
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
     }
 })
 

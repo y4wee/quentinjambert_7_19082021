@@ -19,6 +19,10 @@ const Comment = sequelize.define('Comment', {
     commentaire: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    prenom: {
+        type: DataTypes.TEXT,
+        allowNull: false
     }
 });
 

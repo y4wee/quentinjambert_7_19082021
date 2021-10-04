@@ -11,11 +11,11 @@ const commentCtrl = require('../controllers/comment');
 //declare les routes possible vers /api/sauces
 router.post('/', commentCtrl.createComment);
 
-router.put('/:id', commentCtrl.modifyComment);
+//router.put('/:id', commentCtrl.modifyComment);
 
-router.get('/:id', commentCtrl.getOneComment);
+//router.get('/:id', commentCtrl.getOneComment);
 
-router.get('/', commentCtrl.getAllComments);
+router.get('/:id', commentCtrl.getAllComments);
 
 router.delete('/:id', commentCtrl.deleteOneComment);
 
