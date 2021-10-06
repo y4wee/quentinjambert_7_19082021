@@ -28,7 +28,6 @@ const store = createStore({
         status: '',
         user: user,
         articles: [],
-        comments: [],
     },
     mutations: {
         // gere state user
@@ -46,9 +45,6 @@ const store = createStore({
         // gere state article
         setArticle: function(state, articles) {
             state.articles = articles;
-        },
-        setComment: function(state, comments) {
-            state.comments = comments
         }
     },
     actions: {
@@ -91,6 +87,20 @@ const store = createStore({
                 });
             })
         },
+        // requette creation d'un article
+        articleCreating: ({commit}, articleData) => {
+            console.log(articleData);
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.post('/publication', articleData)
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
         // requete get all article
         articleGetAll: ({commit}) => {
             commit;
@@ -103,8 +113,19 @@ const store = createStore({
                 console.error(error);
             })
         },
+        //requete delete article
+        articleDelete: ({commit}, articleId) => {
+            commit;
+            instance.delete(`/publication/${articleId}`)
+            .then((res) => {
+                console.log(res);
+                location.reload();
+            })
+            .catch((error) =>  {
+                console.error(error);
+            })
+        },
         // requete Post pour creer un commentaire 
-        // requete post user Signup
         commentPost: ({commit}, commentData) => {
             return new Promise((resolve, reject) => {
                 commit;
@@ -120,9 +141,22 @@ const store = createStore({
         // requete get all comments d'un article en fonction de l'id de ce dernier
         commentGetAll: ({commit}, articleId) => {
             return new Promise((resolve, reject) => {
+                commit;
                 instance.get(`/comments/${articleId}`)
                 .then(function (res) {
-                    commit('setComment', res.data)
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
+        //requete delete comment
+        commentDelete: ({commit}, commentId) => {
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.delete(`/comments/${commentId}`)
+                .then(function (res) {
                     resolve(res);
                 })
                 .catch(function (error) {

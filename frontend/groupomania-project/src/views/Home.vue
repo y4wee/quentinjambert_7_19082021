@@ -17,6 +17,7 @@
                 v-for="article in articles"
                 :key="article.id"
                 :article="article"
+                :user="user"
                 />
             </div>
 
@@ -93,9 +94,10 @@ export default {
         height: calc(100vh - 70px);
         background-color: white;
         margin-top: 70px;
-        box-shadow: 0 10px 10px 6px #d1515a;
+        box-shadow: 0 8px 4px 1px #d1515a;
         overflow: hidden;
         &Head {
+            z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -126,6 +128,7 @@ export default {
             }
         }
         &Scrollback {
+            z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
