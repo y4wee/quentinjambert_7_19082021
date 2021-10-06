@@ -1,6 +1,10 @@
 <template>
 
 <div class="article">
+    <div class="articleDelete" v-if="authorised(this.article)" @click="articleDelete()">
+        <i class="fas fa-trash-alt"></i>
+    </div>
+
     <div class="articleUser">
         <img src="../assets/logo-compte.svg" alt="logo groupomania">
         <span> {{ userExt.prenomExt }} </span>
@@ -40,7 +44,7 @@ import Comment from '../components/Comment.vue';
 export default {
     name: "Article",
 
-    props: ["article"],
+    props: ["article", "user"],
     components: {
         Comment
     },
@@ -68,10 +72,23 @@ export default {
                     console.error(error);
                 });
         },
+        articleDelete: function() {
+            console.log(this.article.id)
+            if(confirm('voulez-vous vraiment supprimer cette publication ?')) {
+                this.$store.dispatch("articleDelete", this.article.id);
+            }
+        },
         toggleComment: function() {
             this.revele = !this.revele
+        },
+        authorised: function(model) {
+            console.log(this.user)
+            if( this.user.userId == model.UserId || this.user.isAdmin ) {
+                return true
+            }
+            return false
         }
-    }
+    },
 };
 </script>
 
@@ -81,10 +98,24 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     width: 600px;
     height: auto;
     margin-top: 70px;
     border-bottom: solid 1px #aeaeb1;
+    //bouton delete
+    &Delete {
+        position: absolute;
+        right: 20px;
+        top: 30px;
+        font-size: 1.4em;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+        &:hover {
+            transform: scale(1.2);
+            color: #d1515a;
+        }
+    }
     //partie user du post
     &User {
         display: flex;
