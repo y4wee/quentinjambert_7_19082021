@@ -1,16 +1,26 @@
 <template>
     <div class="comment">
         <div class="commentList">
+
             <div class="commentListCarte" v-for="comment in comments" :key="comment.id">
-                <div class="commentListCarteUser">
-                    <img src="../assets/logo-compte.svg" alt="logo groupomania">
-                    <span> {{ comment.prenom }} </span>
+
+                <div class="commentListCarteInfo">
+                    <div class="commentListCarteInfoUser">
+                        <img src="../assets/logo-compte.svg" alt="logo groupomania">
+                        <span> {{ comment.prenom }} </span>
+                    </div>
+                    
+                    <div class="commentListCarteInfoText">
+                        <span> {{ comment.commentaire }} </span>    
+                    </div>
                 </div>
-                
-                <div class="commentListCarteText">
-                    <span> {{ comment.commentaire }} </span>
+
+                <div class="commentListCarteDelete" v-if="authorised(comment)" @click="commentDelete(comment.id)">
+                    <i class="fas fa-trash-alt"></i>
                 </div>
+
             </div>
+
         </div>
 
         <div class="commentPost">
@@ -36,12 +46,12 @@ export default {
     data() {
         return {
             commentaire: "",
+            comments: []
         };
     },
     computed: {
         ...mapState({
             user: 'user',
-            comments: 'comments'
         })
     },
     methods: {
@@ -61,7 +71,29 @@ export default {
             });
         },
         commentGetAll: function() {
-            this.$store.dispatch('commentGetAll', this.articleId);
+            this.$store.dispatch('commentGetAll', this.articleId)
+            .then((res) => {
+                console.log(res)
+                this.comments = res.data;
+            })
+        },
+        commentDelete: function(id) {
+            if(confirm('Voulez-vous supprimer ce commentaire ?')) {
+                this.$store.dispatch('commentDelete', id)
+                .then((res) => {
+                    console.log(res)
+                    this.commentGetAll();
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+            }
+        },
+        authorised: function(model) {
+            if( this.user.userId == model.UserId || this.user.isAdmin ) {
+                return true
+            }
+            return false
         }
     }
 };
@@ -85,20 +117,26 @@ export default {
         overflow-y: scroll;
         overflow-x: hidden;
         &::-webkit-scrollbar {
-            width: 6px;
+            width: 10px;
         }
         &::-webkit-scrollbar-thumb {
             background-color: #d1515a;
             border-radius: 30px;
         }
         &Carte {
-            background-color: white;
-            max-width: 400px;
-            min-width: 150px;
+            display: flex;
+            align-items: center;
+            width: 100%;
             height: auto;
             margin: 10px;
-            border-radius: 8px;
-            &User {
+            
+            &Info {
+                background-color: white;
+                min-width: 150px;
+                width: auto;
+                border-radius: 8px;
+            }
+            &InfoUser {
                 display: flex;
                 align-items: center;
                 height: 20px;
@@ -110,8 +148,20 @@ export default {
                     height: 20px;
                 }
             }
-            &Text {
+            &InfoText {
                 margin: 5px 10px;
+                max-width: 400px;
+                word-break: break-all;
+            }
+            &Delete {
+                margin-left: 25px;
+                font-size: 1em;
+                cursor: pointer;
+                transition: all 0.15s ease-out;
+                &:hover {
+                    transform: scale(1.2);
+                    color: #d1515a;
+                }
             }
         }
     }
