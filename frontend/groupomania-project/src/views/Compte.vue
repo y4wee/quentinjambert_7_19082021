@@ -1,17 +1,30 @@
 <template>
 
-    <div class="home">
+    <div class="compte">
         <Nav />
 
-        <div class="homeList">
-            <div class="homeListHead">
-                <h2>Quoi de neuf {{ user.prenom }} ?</h2>
-            </div>
+        <div class="compteMain">
 
-            <div class="homeListCarte">
+            <h1>Votre compte</h1>
 
+            <div class="compteMainInfo">
+                <span class="compteMainInfoNom"><strong>Nom:</strong> {{ user.nom }} </span>
+                
+                <span class="compteMainInfoPrenom"><strong>Prénom:</strong> {{ user.prenom }} </span>
+
+                <span class="compteMainInfoRole" v-if="user.isAdmin"><strong>Role:</strong> Entitée supèrieure</span>
+                <span class="compteMainInfoRole" v-else><strong>Role:</strong> simple Hummain</span>
+                
+
+                <div class="compteMainInfoDelete">
+                    <div>Supprimer ce compte</div>
+                    <input type="password" placeholder="password">
+                    <button type="button">Confirmer</button>
+                </div>
             </div>
+            
         </div>
+
     </div>
 
 </template>
@@ -21,7 +34,7 @@ import Nav from '../components/Nav.vue';
 import { mapState } from 'vuex';
 
 export default {
-    name: 'Home',
+    name: 'Compte',
     components: {
         Nav
     },
@@ -31,48 +44,32 @@ export default {
             return;
         }
         this.$store.dispatch('articleGetAll');
+        console.log(this.user)
     },
     computed: {
         ...mapState({
-            user: 'user',
-            articles: 'articles'
+            user: 'user'
         }),
     }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
+.compte {
     display: flex;
     align-items: center;
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
-
-    &List {
+    &Main {
         position: relative;
         z-index: 2;
         width: 800px;
-        min-height: calc(100vh - 100px);
+        height: calc(100vh - 70px);
         background-color: white;
-        margin-top: 100px;
-        box-shadow: 0 10px 10px 6px #d1515a;
-        &Head {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            background-color: rgba(249,249,249,0.8);
-            position: absolute;
-            left: 0;
-            right: 0;
-            & h2 {
-                width: fit-content;
-                user-select: none;
-            }
-        }
-        
+        margin-top: 70px;
+        box-shadow: 0 8px 4px 1px #d1515a;
     }
 }
 </style>
