@@ -87,6 +87,23 @@ const store = createStore({
                 });
             })
         },
+        // requete delete user
+        userDelete: ({commit}, userData) => {
+            commit;
+            return new Promise((resolve, reject) => {
+                instance.delete(`/auth/${userData.id}`, {
+                    data: {
+                        password: userData.password
+                    }
+                })
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
         // requette creation d'un article
         articleCreating: ({commit}, articleData) => {
             console.log(articleData);

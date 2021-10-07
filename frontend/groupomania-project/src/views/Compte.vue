@@ -8,18 +8,31 @@
             <h1>Votre compte</h1>
 
             <div class="compteMainInfo">
-                <span class="compteMainInfoNom"><strong>Nom:</strong> {{ user.nom }} </span>
+                <div class="compteMainInfoDetail">
+                    <span>Nom:</span> {{ user.nom }}
+                </div>
                 
-                <span class="compteMainInfoPrenom"><strong>Prénom:</strong> {{ user.prenom }} </span>
+                <div class="compteMainInfoDetail">
+                    <span>Prénom:</span> {{ user.prenom }}
+                </div>
 
-                <span class="compteMainInfoRole" v-if="user.isAdmin"><strong>Role:</strong> Entitée supèrieure</span>
-                <span class="compteMainInfoRole" v-else><strong>Role:</strong> simple Hummain</span>
+                <div class="compteMainInfoDetail" v-if="user.isAdmin">
+                    <span>Role:</span> Entitée supèrieure
+                </div>
+                <div class="compteMainInfoDetail" v-else>
+                    <span>Role:</span> simple Hummain
+                </div>
                 
 
                 <div class="compteMainInfoDelete">
-                    <div>Supprimer ce compte</div>
-                    <input type="password" placeholder="password">
-                    <button type="button">Confirmer</button>
+                    <div v-if="confirmation" class="compteMainInfoDeleteOff" @click="confirmationDelete()">Annuler</div>
+                    <div v-else class="compteMainInfoDeleteOn" @click="confirmationDelete()">Supprimer ce compte</div>
+
+                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm">
+
+                    <button v-if="confirmation" type="button" :disabled="password.length == 0" @click="userDelete()">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
             </div>
             
@@ -39,14 +52,44 @@ export default {
         Nav
     },
     mounted: function() {
+        // renvoies a la page log aucun user connecté
         if(this.$store.state.user.userId === 0) {
             this.$router.push('/');
             return;
         }
-        this.$store.dispatch('articleGetAll');
-        console.log(this.user)
+    },
+    data() {
+      return {
+          confirmation: false,
+          password: '',
+      }
+    },
+    methods: {
+        // permet de montrer l'input password 
+        confirmationDelete: function() {
+            this.confirmation = !this.confirmation;
+        },
+        // fonction pour supprimer le compte
+        userDelete: function(){
+            if(confirm('Etes vous sûr de vouloir supprimer votre compte ?')) {
+                this.$store.dispatch('userDelete', {
+                    id: this.user.userId,
+                    password: this.password
+                })
+                .then((res) => {
+                    console.log(res);
+                    this.$store.commit('logout');
+                    this.$router.push('/');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.password = '';
+                })
+            }
+        },
     },
     computed: {
+        // recuperation du state vuex
         ...mapState({
             user: 'user'
         }),
@@ -63,13 +106,87 @@ export default {
     min-height: 100vh;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
     &Main {
-        position: relative;
         z-index: 2;
         width: 800px;
         height: calc(100vh - 70px);
         background-color: white;
         margin-top: 70px;
         box-shadow: 0 8px 4px 1px #d1515a;
+        & h1 {
+            text-align: center;
+            color: #aeaeb1;
+        }
+
+        &Info {
+            display: flex;
+            flex-direction: column;
+            background-color: #F4F4F4;
+            width: 550px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+
+            &Detail {
+                display: flex;
+                align-items: baseline;
+                width: auto;
+                height: 30px;
+                margin: 10px 0 20px 10px;
+                font-size: 1.2em;
+                & span {
+                    color: #d1515a;
+                    font-weight: bold;
+                    font-size: 1.3em;
+                    margin-right: 25px;
+                }
+            }
+
+            &Delete {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+                margin: 20px 0;
+                & div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 40px;
+                    width: 70%;
+                    margin: 20px 0;
+                    background-color: #d1515a;
+                    color: white;
+                    font-size: 1.2em;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+                & input {
+                    width: calc(70% - 30px);
+                    height: 40px;
+                    border: none;
+                    border-radius: 8px;
+                    outline: none;
+                    font-size: 1.2em;
+                    padding: 0 15px;
+                }
+                & button {
+                    border: none;
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    margin: 30px 0 0 0;
+                    background-color: white;
+                    color: #d1515a;
+                    font-size: 1.2em;
+                    cursor: pointer;
+                    &:disabled {
+                        color: #aeaeb1;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
     }
 }
 </style>

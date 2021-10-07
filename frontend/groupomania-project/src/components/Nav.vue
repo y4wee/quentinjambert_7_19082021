@@ -50,7 +50,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    z-index: 1;
     width: 100%;
     height: 70px;
     background-color: #122441;
