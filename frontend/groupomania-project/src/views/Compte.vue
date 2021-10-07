@@ -7,6 +7,8 @@
 
             <h1>Votre compte</h1>
 
+            <img src="../assets/logo-compte.svg" alt="logo groupomania">
+
             <div class="compteMainInfo">
                 <div class="compteMainInfoDetail">
                     <span>Nom:</span> {{ user.nom }}
@@ -28,7 +30,7 @@
                     <div v-if="confirmation" class="compteMainInfoDeleteOff" @click="confirmationDelete()">Annuler</div>
                     <div v-else class="compteMainInfoDeleteOn" @click="confirmationDelete()">Supprimer ce compte</div>
 
-                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm">
+                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm" autofocus>
 
                     <button v-if="confirmation" type="button" :disabled="password.length == 0" @click="userDelete()">
                         <i class="fas fa-trash-alt"></i>
@@ -106,6 +108,9 @@ export default {
     min-height: 100vh;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
     &Main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         z-index: 2;
         width: 800px;
         height: calc(100vh - 70px);
@@ -113,8 +118,11 @@ export default {
         margin-top: 70px;
         box-shadow: 0 8px 4px 1px #d1515a;
         & h1 {
-            text-align: center;
             color: #aeaeb1;
+            margin-bottom: 0;
+        }
+        & img {
+            height: 200px;
         }
 
         &Info {
@@ -122,7 +130,6 @@ export default {
             flex-direction: column;
             background-color: #F4F4F4;
             width: 550px;
-            margin: 50px auto;
             padding: 20px;
             border-radius: 8px;
 

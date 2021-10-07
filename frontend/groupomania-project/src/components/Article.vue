@@ -82,7 +82,6 @@ export default {
             this.revele = !this.revele
         },
         authorised: function(model) {
-            console.log(this.user)
             if( this.user.userId == model.UserId || this.user.isAdmin ) {
                 return true
             }

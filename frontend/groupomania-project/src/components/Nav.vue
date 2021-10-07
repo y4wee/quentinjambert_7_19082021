@@ -78,7 +78,7 @@ export default {
         height: 65px;
         min-width: 125px;
         color: white;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.15s ease-out;
         margin-right: 10px;
         user-select: none;
         text-decoration: none;
@@ -86,7 +86,7 @@ export default {
         & .icon {
             font-size: 1.8em;
             transform: translateY(16px);
-            transition: all 0.2s ease-in-out;
+            transition: all 0.15s ease-in-out;
         }
         // info sous l'icone des sections
         &Info {
@@ -94,7 +94,7 @@ export default {
             font-size: 1.3em;
             margin-top: 5px;
             transform: translateY(16px);
-            transition: all 0.2s ease-in-out;
+            transition: all 0.15s ease-in-out;
         }
 
         // effet des hover sur les sections
@@ -144,7 +144,6 @@ export default {
                 font-size: 1.2em;
                 &:hover{
                     background-color: #d1515a;
-                    color: rgb(22, 44, 78);
                 }
             }
         }
