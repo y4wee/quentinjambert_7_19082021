@@ -31,6 +31,14 @@ const Article = sequelize.define('Article', {
     dislikes: {
         type: DataTypes.INTEGER.UNSIGNED,
         defaultValue: 0
+    },
+    userLiked: {
+        type: DataTypes.STRING,
+        defaultValue: ''
+    },
+    userDisliked: {
+        type: DataTypes.STRING,
+        defaultValue: ''
     }
 });
 

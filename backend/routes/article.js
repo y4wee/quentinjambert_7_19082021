@@ -10,15 +10,15 @@ const multer = require('../middlewares/multer'); //gestion des fichiers images
 const articleCtrl = require('../controllers/article');
 
 //declare les routes possible vers /api/sauces
-router.post('/', multer, articleCtrl.createArticle);
+router.post('/', auth, multer, articleCtrl.createArticle);
 
-router.put('/:id', multer, articleCtrl.modifyArticle);
+//router.put('/:id', auth, multer, articleCtrl.modifyArticle);
 
-router.get('/:id', articleCtrl.getOneArticle);
+//router.get('/:id', auth, articleCtrl.getOneArticle);
 
-router.get('/',auth, articleCtrl.getAllArticles);
+router.get('/', auth, articleCtrl.getAllArticles);
 
-router.delete('/:id', articleCtrl.deleteOneArticle);
+router.delete('/:id', auth, articleCtrl.deleteOneArticle);
 
 router.post('/:id/like', articleCtrl.likeArticle);
 

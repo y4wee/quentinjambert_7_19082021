@@ -9,15 +9,15 @@ const auth = require('../middlewares/auth'); //gestion autorisation
 const commentCtrl = require('../controllers/comment');
 
 //declare les routes possible vers /api/sauces
-router.post('/', commentCtrl.createComment);
+router.post('/', auth, commentCtrl.createComment);
 
 //router.put('/:id', commentCtrl.modifyComment);
 
 //router.get('/:id', commentCtrl.getOneComment);
 
-router.get('/:id', commentCtrl.getAllComments);
+router.get('/:id', auth, commentCtrl.getAllComments);
 
-router.delete('/:id', commentCtrl.deleteOneComment);
+router.delete('/:id', auth, commentCtrl.deleteOneComment);
 
 
 module.exports = router;

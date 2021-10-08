@@ -130,6 +130,23 @@ const store = createStore({
                 console.error(error);
             })
         },
+        // requete like article
+        // requete post user Signup
+        articleLike: ({commit}, data) => {
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.post(`/publication/${data.id}/like`, {
+                    like: data.like,
+                    userId: data.userId
+                })
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+            })
+        },
         //requete delete article
         articleDelete: ({commit}, articleId) => {
             commit;

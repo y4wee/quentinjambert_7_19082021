@@ -4,8 +4,10 @@ const fs = require('fs');
 
 //controlleur pour la creation d'une nouvelle publication
 exports.createArticle = (req, res, next) => {
-  const articleObject = JSON.parse(req.body.article); //recuperation corps de la requete parsé pour l'image
-  console.log(articleObject);
+  const articleObject = {
+    titre: req.body.titre,
+    UserId: req.body.UserId
+  }
   const article = Article.build({ // creation du nouvel objet sauce grace au model pré-établie
     ...articleObject,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, //creation URL image
@@ -14,7 +16,7 @@ exports.createArticle = (req, res, next) => {
     .then(() => res.status(201).json({ message: 'publication créée !'}))
     .catch(error => res.status(400).json({ error }));
 };
-
+/*
 //controlleur pour modifier une publication existante
 exports.modifyArticle = (req, res, next) => {
   let articleObject // creation d'une variable pour l'objet modifié
@@ -52,7 +54,7 @@ exports.getOneArticle = (req, res, next) => {
       .then(article => res.status(200).json(article))
       .catch(error => res.status(500).json({ error }));
 };
-
+*/
 // controlleur qui renvoi toutes les publications de la bdd de la plus recente a la plus ancienne
 exports.getAllArticles = (req, res, next) => {
     Article.findAll({
@@ -81,43 +83,65 @@ exports.deleteOneArticle = (req, res, next) => {
 //controlleur pour la gestion des like/dislike des sauces
 exports.likeArticle = (req, res, next) => {
   const like = req.body.like;
-  const user = req.body.userId;
-  const sauceId = req.params.id;
+  const user = req.body.userId + '';
+  const articleId = req.params.id;
   
-  if (like == 1) { // si like
-    Sauce.updateOne( //mets a jour la sauce en question par son id 
-      { _id: sauceId },
-      { $inc: {likes: 1}, $push: {usersLiked: user} } // change le nombre de like et mets le userId dans les tableau des liked
-    )
-    .then(() => res.status(200).json({ message: "ajouté un like"}))
-    .catch(error => res.status(500).json({ error: error }));
-  }
-  else if (like == -1) { // si dislike
-    Sauce.updateOne( //mets a jour la sauce en question par son id 
-      { _id: sauceId },
-      { $inc: {dislikes: 1}, $push: {usersDisliked: user} } // change le nombre de dislike et mets le userId dans les tableau des disliked
-    )
-    .then(() => res.status(200).json({ message: "ajouté un dislike"}))
-    .catch(error => res.status(500).json({ error: error }));
-  } else { // si on veut enlever un like ou un dislike
-    Sauce.findOne({ _id: sauceId }) // on cherche la sauce en question par son id
-      .then((sauce) => {
-        if (sauce.usersLiked.find(user => user = req.body.userId)) { // on verifie si le userId est present dans le tableau des liked
-          Sauce.updateOne(
-            { _id: sauceId },
-            { $inc: {likes: -1}, $pull: {usersLiked: user} } // si oui on enleve un like et le userId du tableau des liked
-          )
-          .then(() => res.status(200).json({ message: "enlevé un like"}))
-          .catch(error => res.status(400).json({ error: error }));
-        } else { // sinon  le user doit etre dans les disliked
-          Sauce.updateOne(
-            { _id: sauceId },
-            { $inc: {dislikes: -1}, $pull: {usersDisliked: user} } // on enleve un dislike et le userId du tableau des disliked
-          )
-          .then(() => res.status(200).json({ message: "enlevé un dislike"}))
-          .catch(error => res.status(400).json({ error: error }));
-        }
+  
+  Article.findByPk(articleId)
+  .then((article) => {
+    let newDislikes = 0;
+    let newLikes = 0;
+    let userLikedArray = article.userLiked.split(',');
+    let userDislikedArray = article.userDisliked.split(',');
+
+    if (like == 1) { // si like
+      newLikes = article.likes + 1;
+      userLikedArray.push(user)
+      article.update({
+        likes: newLikes,
+        userLiked: userLikedArray.toString()
       })
+      .then(() => res.status(200).json({ message: "ajouté un like"}))
       .catch(error => res.status(500).json({ error: error }));
-  }
+    }
+    else if (like == -1) { // si dislike
+      newDislikes = article.dislikes + 1;
+      userDislikedArray.push(user);
+      article.update({
+        dislikes: newDislikes,
+        userDisliked: userDislikedArray.toString()
+      })
+      .then(() => res.status(200).json({ message: "ajouté un dislike"}))
+      .catch(error => res.status(500).json({ error: error }));
+    } else {
+      let index;
+      console.log(userLikedArray)
+      // sinon like == 0
+      if (userLikedArray.findIndex(user => user = req.body.userId + '') != -1) { // on verifie si le userId est present dans le tableau des liked
+        index = userLikedArray.findIndex(user => user = req.body.userId + '');
+        console.log(index)
+        userLikedArray.splice(index, 1);
+        newLikes = article.likes - 1;
+        article.update({
+          likes: newLikes,
+          userLiked: userLikedArray.toString()
+        })
+        .then(() => res.status(200).json({ message: "enlevé un like"}))
+        .catch(error => res.status(400).json({ error: error }));
+      } else { // sinon  le user doit etre dans les disliked
+        index = userDislikedArray.findIndex(user => user = req.body.userId + '');
+        userDislikedArray.splice(index, 1);
+        newDislikes = article.dislikes - 1;
+        console.log(userDislikedArray)
+        console.log(newDislikes)
+        article.update({
+          dislikes: newDislikes,
+          userDisliked: userDislikedArray.toString()
+        })
+        .then(() => res.status(200).json({ message: "enlevé un dislike"}))
+        .catch(error => res.status(400).json({ error: error }));
+      }
+    }
+  })
+  .catch(error => res.status(500).json({ error: error }));
 }
