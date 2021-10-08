@@ -83,60 +83,47 @@ exports.deleteOneArticle = (req, res, next) => {
 //controlleur pour la gestion des like/dislike des sauces
 exports.likeArticle = (req, res, next) => {
   const like = req.body.like;
-  const user = req.body.userId + '';
+  const user = req.body.userId.toString();
   const articleId = req.params.id;
-  
   
   Article.findByPk(articleId)
   .then((article) => {
     let newDislikes = 0;
     let newLikes = 0;
-    let userLikedArray = article.userLiked.split(',');
-    let userDislikedArray = article.userDisliked.split(',');
 
     if (like == 1) { // si like
       newLikes = article.likes + 1;
-      userLikedArray.push(user)
       article.update({
         likes: newLikes,
-        userLiked: userLikedArray.toString()
+        userLiked: article.userLiked.concat(' ', user)
       })
       .then(() => res.status(200).json({ message: "ajouté un like"}))
       .catch(error => res.status(500).json({ error: error }));
     }
     else if (like == -1) { // si dislike
       newDislikes = article.dislikes + 1;
-      userDislikedArray.push(user);
       article.update({
         dislikes: newDislikes,
-        userDisliked: userDislikedArray.toString()
+        userDisliked: article.userDisliked.concat(' ', user)
       })
       .then(() => res.status(200).json({ message: "ajouté un dislike"}))
       .catch(error => res.status(500).json({ error: error }));
     } else {
-      let index;
-      console.log(userLikedArray)
       // sinon like == 0
-      if (userLikedArray.findIndex(user => user = req.body.userId + '') != -1) { // on verifie si le userId est present dans le tableau des liked
-        index = userLikedArray.findIndex(user => user = req.body.userId + '');
-        console.log(index)
-        userLikedArray.splice(index, 1);
+      if (article.userLiked.includes(user)) { // on verifie si le userId est present dans le tableau des liked
+        console.log(user)
         newLikes = article.likes - 1;
         article.update({
           likes: newLikes,
-          userLiked: userLikedArray.toString()
+          userLiked: article.userLiked.replace(user, '')
         })
         .then(() => res.status(200).json({ message: "enlevé un like"}))
         .catch(error => res.status(400).json({ error: error }));
       } else { // sinon  le user doit etre dans les disliked
-        index = userDislikedArray.findIndex(user => user = req.body.userId + '');
-        userDislikedArray.splice(index, 1);
         newDislikes = article.dislikes - 1;
-        console.log(userDislikedArray)
-        console.log(newDislikes)
         article.update({
           dislikes: newDislikes,
-          userDisliked: userDislikedArray.toString()
+          userDisliked: article.userDisliked.replace(user, '')
         })
         .then(() => res.status(200).json({ message: "enlevé un dislike"}))
         .catch(error => res.status(400).json({ error: error }));
