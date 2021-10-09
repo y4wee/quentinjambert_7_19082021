@@ -24,8 +24,8 @@
         </div>
 
         <div class="commentPost">
-            <textarea v-model="commentaire" name="comment" required placeholder="Ecrivez un commentaire..."></textarea>
-            <button type="button" @click="commentPost">
+            <textarea v-model="commentaire" name="comment" required placeholder="Ecrivez un commentaire..." @input="commentValid()"></textarea>
+            <button type="button" :disabled="!validated" @click="commentPost">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
@@ -46,7 +46,8 @@ export default {
     data() {
         return {
             commentaire: "",
-            comments: []
+            comments: [],
+            validated: false
         };
     },
     computed: {
@@ -66,9 +67,7 @@ export default {
                 console.log(res);
                 this.commentGetAll();
                 this.commentaire = "";
-            }).catch((err) => {
-                console.error(err);
-            });
+            }).catch(error => console.error(error))
         },
         commentGetAll: function() {
             this.$store.dispatch('commentGetAll', this.articleId)
@@ -76,6 +75,7 @@ export default {
                 console.log(res)
                 this.comments = res.data;
             })
+            .catch(error => console.error(error))
         },
         commentDelete: function(id) {
             if(confirm('Voulez-vous supprimer ce commentaire ?')) {
@@ -84,10 +84,15 @@ export default {
                     console.log(res)
                     this.commentGetAll();
                 })
-                .catch((error) => {
-                    console.error(error);
-                })
+                .catch(error => console.error(error))
             }
+        },
+        commentValid: function() {
+            if(this.commentaire.length > 2) {
+                this.validated = true;
+                return;
+            }
+            this.validated = false;
         },
         authorised: function(model) {
             if( this.user.userId == model.UserId || this.user.isAdmin ) {
@@ -190,6 +195,11 @@ export default {
             cursor: pointer;
             &:hover {
                 color: #d1515a;
+            }
+            &:disabled {
+                background-color: #aeaeb1;
+                color: white;
+                cursor: auto;
             }
         }
     }

@@ -62,25 +62,31 @@ export default {
 
     mounted: function() {
         this.getArticleUser();
+        this.checkUserLike();
     },
     
     methods: {
+        // recupere l'info du createur de l'article
         getArticleUser: function() {
             this.$store
                 .dispatch("userGetOne", { id: this.article.UserId })
                 .then((userExt) => {
                     this.userExt = userExt.data;
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch(error => console.error(error))
         },
+        // bouton pour delete article
         articleDelete: function() {
             console.log(this.article.id)
             if(confirm('voulez-vous vraiment supprimer cette publication ?')) {
-                this.$store.dispatch("articleDelete", this.article.id);
+                this.$store.dispatch("articleDelete", this.article.id)
+                .then(() => {
+                    this.$store.dispatch('articleGetAll');
+                })
+                .catch(error => console.error(error))
             }
         },
+        // fonction click like
         onLike: function() {
             if(this.liked) {
                 this.like = 0
@@ -95,11 +101,11 @@ export default {
             })
             .then((res) => {
                 console.log(res);
+                this.$store.dispatch('articleGetAll');
             })
-            .catch((error) => {
-                console.error(error);
-            })
+            .catch(error => console.error(error))
         },
+        // fonction click dislike
         onDislike: function() {
             if(this.disliked) {
                 this.like = 0
@@ -114,14 +120,25 @@ export default {
             })
             .then((res) => {
                 console.log(res);
+                this.$store.dispatch('articleGetAll');
             })
-            .catch((error) => {
-                console.error(error);
-            })
+            .catch(error => console.error(error))
         },
+        // check chaque article si like ou dislike par le user
+        checkUserLike: function() {
+            let userId = this.user.userId.toString()
+            if(this.article.userLiked.includes(userId)) {
+                this.liked = true;
+            }
+            else if(this.article.userDisliked.includes(userId)) {
+                this.disliked = true;
+            }
+        },
+        // revele les commentaires
         toggleComment: function() {
             this.revele = !this.revele
         },
+        // autorisation admin ou user 
         authorised: function(model) {
             if( this.user.userId == model.UserId || this.user.isAdmin ) {
                 return true

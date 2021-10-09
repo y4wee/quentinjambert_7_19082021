@@ -13,25 +13,25 @@
 
         <div class="logForm">
           <div class="formInput" v-if="mode == 'signup'">    
-            <input v-model="nom" type="text" name="name" placeholder="Nom" required>
+            <input v-model="nom" type="text" name="name" placeholder="Nom" @input="formValid()">
           </div>
 
           <div class="formInput" v-if="mode == 'signup'">
-            <input v-model="prenom" type="text" name="firstName" placeholder="Prénom" required>
+            <input v-model="prenom" type="text" name="firstName" placeholder="Prénom" @input="formValid()">
           </div>
 
           <div class="formInput">
-            <input v-model="email" type="email" name="email" placeholder="Email" required>
+            <input v-model="email" type="email" name="email" placeholder="Email" @input="formValid()">
           </div>
 
           <div class="formInput">
-            <input v-model="password" type="password" name="password" placeholder="Mot de passe" required>
+            <input v-model="password" type="password" name="password" placeholder="Mot de passe" @input="formValid()">
           </div>
 
-          <button class="formButton" v-if="mode == 'login'" type="button" @click="userLogin()">
+          <button class="formButton" v-if="mode == 'login'" type="button" :disabled="!validated" @click="userLogin()">
             Login
           </button>
-          <button class="formButton" v-else type="button" @click="userCreating()">
+          <button class="formButton" v-else type="button" :disabled="!validated" @click="userCreating()">
             Login
           </button>
 
@@ -60,7 +60,8 @@ export default {
       nom: "",
       prenom: "",
       email: "",
-      password: ""
+      password: "",
+      validated: false
     }
   },
   mounted: function() {
@@ -70,7 +71,7 @@ export default {
     }
   },
   methods: {
-    // fonction pour changer mode login ou signup
+    // fonction pour input@inputr mode login ou signup
     toggleMode: function() {
       if(this.mode == 'login') {
         this.mode = 'signup'
@@ -90,9 +91,7 @@ export default {
         console.log(res);
         this.userLogin(); // si ok, lance la fonction login
       })
-      .catch((error) => {
-        console.error(error);
-      })
+      .catch(error => console.error(error))
     },
     // fonction pour se connecter, envoie les donné user au backend
     userLogin: function() {
@@ -104,12 +103,49 @@ export default {
         console.log(res);
         this.$router.push('/home');
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch(error => console.error(error))
     },
+    // validation des input formulaire
+    passwordValid: function() {
+      let passwordRgex = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,})\S$/;
+      if(!passwordRgex.test(this.password)) {
+        return false;
+      }
+      return true;
+    },
+    emailValid: function() {
+      let emailRgex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if(!emailRgex.test(this.email)) {
 
-    
+        return false;
+      }
+      return true;
+    },
+    nameValid: function(name) {
+      let nameRgex = /^([A-Za-z ,.'`-]{2,30})$/gm;
+      if(!nameRgex.test(name)) {
+        return false;
+      }
+      return true;
+    },
+    formValid: function() {
+      switch (this.mode) {
+        case 'signup':
+          if(this.nameValid(this.prenom) && this.nameValid(this.nom) && this.emailValid() && this.passwordValid()) {
+            this.validated = true;
+          } else {
+            this.validated = false;
+          }
+          break;
+        case 'login':
+          if(this.emailValid() && this.passwordValid()) {
+            this.validated = true;
+          } else {
+            this.validated = false;
+          }
+          break;
+      }
+    }
   }
 }
 </script>
@@ -228,6 +264,12 @@ h2 {
     &:hover {
       transform: scale(1.1);
       border-color: #d1515a;
+    }
+    &:disabled {
+      border-color: #aeaeb1;
+      color: #aeaeb1;
+      transform: scale(1);
+      cursor: auto;
     }
 }
 

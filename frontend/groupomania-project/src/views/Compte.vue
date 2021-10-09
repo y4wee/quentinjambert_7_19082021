@@ -30,9 +30,9 @@
                     <div v-if="confirmation" class="compteMainInfoDeleteOff" @click="confirmationDelete()">Annuler</div>
                     <div v-else class="compteMainInfoDeleteOn" @click="confirmationDelete()">Supprimer ce compte</div>
 
-                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm" autofocus>
+                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm" autofocus @input="passwordValid()">
 
-                    <button v-if="confirmation" type="button" :disabled="password.length == 0" @click="userDelete()">
+                    <button v-if="confirmation" type="button" :disabled="!validated" @click="userDelete()">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
@@ -64,6 +64,7 @@ export default {
       return {
           confirmation: false,
           password: '',
+          validated: false
       }
     },
     methods: {
@@ -88,6 +89,15 @@ export default {
                     this.password = '';
                 })
             }
+        },
+        // validation password
+        passwordValid: function() {
+            let passwordRgex = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,})\S$/;
+            if(!passwordRgex.test(this.password)) {
+                this.validated = false;
+                return
+            }
+            this.validated = true;
         },
     },
     computed: {

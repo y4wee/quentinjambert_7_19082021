@@ -9,7 +9,7 @@
             
             <form class="creatingMainForm" enctype="multipart/form-data">
                 <div class="creatingMainFormTitre">
-                    <input v-model="titre" type="text" name="titre" placeholder="Titre..." required>
+                    <input v-model="titre" type="text" name="titre" placeholder="Titre..." required @input="formValid()">
                 </div>
 
                 <div class="creatingMainFormMedia">
@@ -18,7 +18,7 @@
 
                 <img v-if="image.length > 0" :src="image" alt="aperçu media publication">
 
-                <button @click.prevent="articleCreating()">Créer</button>
+                <button type="button" :disabled="!validated" @click.prevent="articleCreating()">Créer</button>
             </form>
 
         </div>
@@ -45,7 +45,8 @@ export default {
         return {
             titre: '',
             file: {},
-            image: ''
+            image: '',
+            validated: false
         }
     },
     computed: {
@@ -60,15 +61,16 @@ export default {
                 this.image = '';
                 return;
             }
-            this.createImage(this.file)
+            this.createImage(this.file);
         },
         createImage: function(file) {
             let reader = new FileReader();
 
             reader.onload = (event) => {
                 this.image = event.target.result;
+                this.formValid();
             };
-            reader.readAsDataURL(file) 
+            reader.readAsDataURL(file);
         },
         articleCreating: function() {
             const formData = new FormData
@@ -85,6 +87,13 @@ export default {
                 console.log(error);
             })
         },
+        formValid: function() {
+            if(this.titre.length > 0 && this.image.length > 0) {
+                this.validated = true;
+                return
+            }
+            this.validated = false;
+        }
     }
 }
 </script>
@@ -172,6 +181,11 @@ export default {
                 &:hover {
                     transform: scale(1.1);
                     box-shadow: 0 0 5px 0 #aeaeb1;
+                }
+                &:disabled {
+                    transform: scale(1);
+                    box-shadow: none;
+                    background-color: #aeaeb1;
                 }
             }
         }

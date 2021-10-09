@@ -120,14 +120,16 @@ const store = createStore({
         },
         // requete get all article
         articleGetAll: ({commit}) => {
-            commit;
-            instance.get('/publication')
-            .then((res) => {
-                commit('setArticle', res.data)
-                console.log(res);
-            })
-            .catch((error) =>  {
-                console.error(error);
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.get('/publication')
+                .then(function (res) {
+                    commit('setArticle', res.data)
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
             })
         },
         // requete like article
@@ -149,14 +151,15 @@ const store = createStore({
         },
         //requete delete article
         articleDelete: ({commit}, articleId) => {
-            commit;
-            instance.delete(`/publication/${articleId}`)
-            .then((res) => {
-                console.log(res);
-                location.reload();
-            })
-            .catch((error) =>  {
-                console.error(error);
+            return new Promise((resolve, reject) => {
+                commit;
+                instance.delete(`/publication/${articleId}`)
+                .then(function (res) {
+                    resolve(res);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
             })
         },
         // requete Post pour creer un commentaire 
