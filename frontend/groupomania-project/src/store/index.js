@@ -6,27 +6,24 @@ const instance = axios.create({
     baseURL: 'http://localhost:3000/api/'
 });
 
-// variable du user par defaut
-let userDefault = {
-    userId: 0,
-    nom: '',
-    prenom: '',
-    isAdmin: false,
-    token: ''
-};
+
 // on recupere les data user si connecté dans le localStorage
-let user = JSON.parse(localStorage.getItem('user'));
-if(!user) {
-    user = userDefault // sinon on applique la variable par defaut
-} else {
-    instance.defaults.headers.common['Authorization'] = user.token; // on applique les auth au header avec le bearer token
+let token = JSON.parse(localStorage.getItem('token'));
+if(token) {
+    instance.defaults.headers.common['Authorization'] = token; // on applique les auth au header avec le bearer token
 }
 
 // creat new store instance 
 const store = createStore({
     state: {
         status: '',
-        user: user,
+        user: {
+            userId: 0,
+            nom: '',
+            prenom: '',
+            isAdmin: false,
+            token: ''
+        },
         articles: [],
     },
     mutations: {
@@ -34,13 +31,25 @@ const store = createStore({
         setUser: function(state, user) {
             user.token = 'Bearer ' + user.token;
             state.user = user;
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('token', JSON.stringify(user.token));
             instance.defaults.headers.common['Authorization'] = user.token;
+        },
+        userOn: function(state, data) {
+            state.user.userId = data.userId;
+            state.user.nom = data.nom;
+            state.user.prenom = data.prenom;
+            state.user.isAdmin = data.isAdmin;
         },
         // mutation pour deconnexion user
         logout: function(state) {
-            localStorage.removeItem('user');
-            state.user = userDefault;
+            localStorage.removeItem('token');
+            state.user = {
+                userId: 0,
+                nom: '',
+                prenom: '',
+                isAdmin: false,
+                token: ''
+            };
         },
         // gere state article
         setArticle: function(state, articles) {

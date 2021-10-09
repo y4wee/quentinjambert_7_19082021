@@ -37,7 +37,7 @@ exports.login = (req, res, next) => {
             prenom: user.prenom,
             isAdmin: user.isAdmin,
             token: jwt.sign(
-              { userId: user._id },
+              { userId: user.id },
               process.env.JWT_SECRET, // creation token de connexion
               { expiresIn: '24h' }
             )
@@ -48,17 +48,33 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// controlleur get pour page compte 
+// controlleur get one user
 exports.getOneUser = (req, res, next) => {
+  if(req.params.id == 0) {
+    const token = req.headers.authorization.split(' ')[1]; //recuperation du token
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET); // decodage du token grace a la clé 
+    const id = decodedToken.userId;
+    User.findByPk(id)
+    .then(user => {
+      res.status(200).json({
+          userId: user.id,
+          nom: user.nom,
+          prenom: user.prenom,
+          isAdmin: user.isAdmin,
+      });
+    })
+    .catch(error => res.status(500).json({ error }));
+  } else {
     User.findByPk(req.params.id)
-        .then(user => {
-            res.status(200).json({
-                nomExt: user.nom,
-                prenomExt: user.prenom,
-                isAdminExt: user.isAdmin,
-            });
-        })
-        .catch(error => res.status(500).json({ error }));
+    .then(user => {
+      res.status(200).json({
+          nomExt: user.nom,
+          prenomExt: user.prenom,
+          isAdminExt: user.isAdmin,
+      });
+    })
+    .catch(error => res.status(500).json({ error }));
+  }
 };
 
 // controlleur pour suppression profil

@@ -56,8 +56,15 @@ export default {
     mounted: function() {
         // renvoies a la page log aucun user connecté
         if(this.$store.state.user.userId === 0) {
-            this.$router.push('/');
-            return;
+            this.$store.dispatch("userGetOne", { id: 0 })
+            .then((user) => {
+                this.$store.commit('userOn', user.data)
+            })
+            .catch((error) => {
+                console.error(error);
+                this.$store.commit('logout')
+                this.$router.push('/');
+            })
         }
     },
     data() {

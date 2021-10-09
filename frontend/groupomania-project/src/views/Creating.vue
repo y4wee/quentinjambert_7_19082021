@@ -37,8 +37,15 @@ export default {
     },
     mounted: function() {
         if(this.$store.state.user.userId === 0) {
-            this.$router.push('/');
-            return;
+            this.$store.dispatch("userGetOne", { id: 0 })
+            .then((user) => {
+                this.$store.commit('userOn', user.data)
+            })
+            .catch((error) => {
+                console.error(error);
+                this.$store.commit('logout')
+                this.$router.push('/');
+            })
         }
     },
     data() {
@@ -63,6 +70,7 @@ export default {
             }
             this.createImage(this.file);
         },
+        // creation image permet l'apperçu de l'image pour la publication 
         createImage: function(file) {
             let reader = new FileReader();
 
@@ -72,6 +80,7 @@ export default {
             };
             reader.readAsDataURL(file);
         },
+        // fonction creation article 
         articleCreating: function() {
             const formData = new FormData
             formData.append("file", this.file)
@@ -87,6 +96,7 @@ export default {
                 console.log(error);
             })
         },
+        // validation formulaire 
         formValid: function() {
             if(this.titre.length > 0 && this.image.length > 0) {
                 this.validated = true;

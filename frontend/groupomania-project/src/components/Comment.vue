@@ -40,7 +40,6 @@ export default {
     props: ["revele", "articleId", "toggleComment"],
 
     mounted: function() {
-        console.log(this.user.prenom);
         this.commentGetAll();
     },
 

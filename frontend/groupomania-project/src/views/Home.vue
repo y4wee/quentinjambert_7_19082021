@@ -45,10 +45,27 @@ export default {
             scrollMode: false,
         }
     },
+    beforeMounted: function() {
+        console.log(this.$store.state.user.userId)
+        this.$store.dispatch("userGetOne", { id: 0 })
+        .then((user) => {
+            console.log(user)
+            this.$store.commit('userOn', user)
+        })
+        .catch(error => console.error(error))
+    },
     mounted: function() {
         if(this.$store.state.user.userId === 0) {
-            this.$router.push('/');
-            return;
+            this.$store.dispatch("userGetOne", { id: 0 })
+            .then((user) => {
+                this.$store.commit('userOn', user.data)
+            })
+            .catch((error) => {
+                console.error(error);
+                this.$store.commit('logout')
+                this.$router.push('/');
+            })
+                
         }
         this.$store.dispatch('articleGetAll');
     },
