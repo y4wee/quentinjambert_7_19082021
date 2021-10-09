@@ -3,6 +3,11 @@ const express = require('express');
 const { Sequelize } = require('sequelize');
 const path = require('path');
 
+const toobusy = require('toobusy-js');
+const helmet = require("helmet");
+const xssClean = require('xss-clean');
+const hpp = require('hpp');
+
 //importation des fichiers routes
 const userRoutes = require('./routes/user');
 const articleRoutes = require('./routes/article');
@@ -35,6 +40,24 @@ app.use((req, res, next) => {
 // parse automatiquement le coprs de la reponse
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// éviter les attaques de pollution des paramètres HTTP
+app.use(hpp());
+// définit des en-têtes de réponse HTTP liés à la sécurité pour se protéger contre certaines vulnérabilités Web bien connues
+app.use(helmet());
+// nettoie les entrées utilisateur provenant du corps de la requête POST ( req.body), de requête GET ( req.query) et des paramètres d'URL ( req.params).
+app.use(xssClean());
+
+
+// surveiller la boucle d'événement, si le trafic reseau est trop important
+app.use(function(req, res, next) {
+    if (toobusy()) {
+        // log if you see necessary
+        res.send(503, "Server Too Busy");
+    } else {
+    next();
+    }
+  });
 
 //declaration routes de l'api
 app.use('/images', express.static(path.join(__dirname, 'images'))); //dossier static pour ajout image
