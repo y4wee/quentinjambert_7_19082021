@@ -26,6 +26,7 @@
 
           <div class="formInput">
             <input v-model="password" type="password" name="password" placeholder="Mot de passe" @input="formValid()">
+            <p v-if="mode == 'signup'">* 8 char min, une majuscule, une minuscule, un chiffre</p>
           </div>
 
           <button class="formButton" v-if="mode == 'login'" type="button" :disabled="!validated" @click="userLogin()">
@@ -232,6 +233,7 @@ h2 {
 
 //aspect des input formulaire
 .formInput {
+  position: relative;
   display: flex;
   align-items: center;
   height: 45px;
@@ -246,6 +248,11 @@ h2 {
     outline: none;
     border: none;
     background-color: inherit;
+  }
+  & p {
+    position: absolute;
+    bottom: -22px;
+    font-size: 0.9em;
   }
 }
 // boutons de validation formulaire

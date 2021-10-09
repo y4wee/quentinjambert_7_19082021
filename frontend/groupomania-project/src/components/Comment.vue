@@ -8,6 +8,7 @@
                     <div class="commentListCarteInfoUser">
                         <img src="../assets/logo-compte.svg" alt="logo groupomania">
                         <span> {{ comment.prenom }} </span>
+                        <span class="commentListCarteInfoUserDate"> {{ comment.createdAt.split('T')[0] }} </span>
                     </div>
                     
                     <div class="commentListCarteInfoText">
@@ -151,6 +152,9 @@ export default {
                 user-select: none;
                 & img {
                     height: 20px;
+                }
+                &Date {
+                    margin-left: 20px;
                 }
             }
             &InfoText {

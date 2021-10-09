@@ -8,6 +8,7 @@
     <div class="articleUser">
         <img src="../assets/logo-compte.svg" alt="logo groupomania">
         <span> {{ userExt.prenomExt }} </span>
+        <span class="articleUserDate"> {{ article.createdAt.split('T')[0] }} </span>
     </div>
     <h2> {{ article.titre }} </h2>
 
@@ -29,7 +30,7 @@
         </div>
     </div>
 
-    <Comment 
+    <Comment
     v-if="revele"
     :revele="revele"
     :articleId="articleId"
@@ -64,7 +65,7 @@ export default {
         this.getArticleUser();
         this.checkUserLike();
     },
-    
+
     methods: {
         // recupere l'info du createur de l'article
         getArticleUser: function() {
@@ -182,6 +183,9 @@ export default {
         & img {
             width: 35px;
             height: 35px;
+        }
+        &Date {
+            margin-left: 30px;
         }
     }
     // partie titre du post
