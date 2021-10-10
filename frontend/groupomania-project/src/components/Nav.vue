@@ -47,51 +47,152 @@ export default {
 //block nav
 .nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    position: fixed;
     width: 100%;
-    height: 70px;
     background-color: #122441;
-    box-shadow: 0 0 0px 30px #d1515a;
 
     & img {
-        height: fit-content;
         user-select: none;
-        margin-right: 100px;
-        margin-left: 10px;
     }
     // block nav logo/home/creating
     &Left {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 70px;
     }
-
     // sections de la nav / home create et user
     &Section {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        height: 65px;
-        min-width: 125px;
         color: white;
-        transition: all 0.15s ease-out;
-        margin-right: 10px;
         user-select: none;
         text-decoration: none;
         // icon des sections
         & .icon {
             font-size: 1.8em;
+        }
+        // info sous l'icone des sections
+        &Info {
+            font-size: 1.3em;
+        }
+    }
+    // section nav User
+    &User {
+        position: relative;
+        cursor: pointer;
+        // revele en hover les options
+        &:hover .navUserHidden {
+            transform: scaleY(1);
+        }
+        // bloc option user caché
+        &Hidden {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            transform-origin: top;
+            transform: scaleY(0);
+            transition: transform 0.15s ease-out;
+            bottom: -99px;
+            height: 100px;
+            background-color: #d1515a;
+            width: 100%;
+            &List {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: white;
+                font-size: 1.2em;
+                height: 45px;
+                width: 100%;
+            }
+        }
+    }
+}
+@media all and (max-width: 1023px) {
+    .nav {
+        z-index: 10;
+        flex-direction: column;
+        height: auto;
+    & img {
+        height: auto;
+        width: calc(100% - 20px);
+        margin: 10px 10%;
+    }
+    // block nav logo/home/creating
+    &Left {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        height: auto;
+        width: 100%;
+        & a {
+            background-color: #d1515a;
+            width: 49%;
+            flex-direction: row;
+        }
+    }
+    // sections de la nav / home create et user
+    &Section {
+        min-height: 50px;
+        color: white;
+        // icon des sections
+        & .icon {
+            margin: 0 10px;
+        }
+        // info sous l'icone des sections
+    }
+    // section nav User
+    &User {
+        width: 49%;
+        margin: 5px 0;
+        background-color: #d1515a;
+        padding-top: 5px;
+        // bloc option user caché
+        &Hidden {
+            bottom: -99px;
+            height: 100px;
+            background-color: #d1515a;
+            width: 100%;
+            &List {
+                width: 100%;
+            }
+        }
+    }
+}
+}
+@media all and (min-width: 1024px) {
+.nav {
+    justify-content: space-between;
+    position: fixed;
+    height: 70px;
+    box-shadow: 0 0 0px 30px #d1515a;
+    & img {
+        height: fit-content;
+        margin-right: 100px;
+        margin-left: 10px;
+    }
+    // block nav logo/home/creating
+    &Left {
+        height: 70px;
+    }
+    // sections de la nav / home create et user
+    &Section {
+        height: 65px;
+        min-width: 125px;
+        transition: all 0.15s ease-out;
+        margin-right: 10px;
+        // icon des sections
+        & .icon {
             transform: translateY(16px);
             transition: all 0.15s ease-in-out;
         }
         // info sous l'icone des sections
         &Info {
             opacity: 0;
-            font-size: 1.3em;
             margin-top: 5px;
             transform: translateY(16px);
             transition: all 0.15s ease-in-out;
@@ -113,41 +214,15 @@ export default {
     }
     // section nav User
     &User {
-        cursor: pointer;
-        // revele en hover les options
-        &:hover .navUserHidden {
-            transform: scaleY(1);
-        }
         // bloc option user caché
         &Hidden {
-            position: absolute;
-            right: 10px;
-            top: 67px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
-            height: 100px;
             background-color: rgb(22, 44, 78);
-            width: 125px;
-            transform-origin: top;
-            transform: scaleY(0);
-            transition: transform 0.15s ease-out;
-            &List {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-decoration: none;
-                color: white;
-                height: 45px;
-                width: 120px;
-                font-size: 1.2em;
-                &:hover{
-                    background-color: #d1515a;
-                }
+            &List:hover {
+                background-color: #d1515a;
             }
         }
     }
+}
 }
 
 </style>

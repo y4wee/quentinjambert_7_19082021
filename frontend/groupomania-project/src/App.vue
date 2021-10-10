@@ -27,6 +27,7 @@ body {
 
 .main {
   min-height: 100vh;
+  min-width: 350px;
 }
 
 #nav {
