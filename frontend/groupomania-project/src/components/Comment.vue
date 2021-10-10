@@ -67,6 +67,7 @@ export default {
                 console.log(res);
                 this.commentGetAll();
                 this.commentaire = "";
+                this.validated = false;
             }).catch(error => console.error(error))
         },
         commentGetAll: function() {

@@ -157,7 +157,8 @@ export default {
     flex-direction: column;
     align-items: center;
     position: relative;
-    width: 600px;
+    width: 100%;
+    max-width: 600px;
     height: auto;
     margin-top: 70px;
     border-bottom: solid 1px #aeaeb1;
@@ -202,25 +203,25 @@ export default {
         background-color: #F4F4F4;
         border-radius: 8px;
         & img {
-            max-width: 500px;
+            max-width: 80%;
             max-height: 500px;
         }
     }
     &Social {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-evenly;
         width: 100%;
         margin: 20px 0;
         & button {
             display: flex;
             align-items: center;
             justify-content: space-evenly;
-            width: 125px;
+            min-width: 100px;
+            max-width: 125px;
             height: 40px;
             border: none;
             border-radius: 8px;
-            margin: 0 10px;
             user-select: none;
             cursor: pointer;
             outline: none;
@@ -245,10 +246,10 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-evenly;
-            width: 125px;
+            min-width: 100px;
+            max-width: 125px;
             height: 40px;
             border-radius: 8px;
-            margin: 0 10px;
             user-select: none;
             cursor: pointer;
         }

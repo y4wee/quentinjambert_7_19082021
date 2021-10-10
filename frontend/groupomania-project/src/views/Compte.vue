@@ -128,25 +128,23 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        z-index: 2;
-        width: 800px;
+        width: 100%;
         height: calc(100vh - 70px);
         background-color: white;
-        margin-top: 70px;
-        box-shadow: 0 8px 4px 1px #d1515a;
         & h1 {
             color: #aeaeb1;
             margin-bottom: 0;
         }
         & img {
-            height: 200px;
+            width: 200px;
         }
 
         &Info {
             display: flex;
             flex-direction: column;
             background-color: #F4F4F4;
-            width: 550px;
+            width: calc(100% - 40px);
+            max-width: 550px;
             padding: 20px;
             border-radius: 8px;
 
@@ -209,6 +207,24 @@ export default {
                         cursor: not-allowed;
                     }
                 }
+            }
+        }
+    }
+}
+@media all and (min-width: 1023px) {
+    .compte {
+        &Main {
+            z-index: 2;
+            max-width: 800px;
+            margin-top: 70px;
+            box-shadow: 0 8px 4px 1px #d1515a;
+            overflow: hidden;
+            height: calc(100vh - 70px);
+            &Head {
+                box-shadow: 0 10px 10px 6px rgba(249,249,249,0.97);
+            }
+            &List {
+                width: 800px;
             }
         }
     }

@@ -119,12 +119,9 @@ export default {
 
     &Main {
         position: relative;
-        z-index: 2;
-        width: 800px;
-        height: calc(100vh - 70px);
+        width: 100%;
+        min-height: calc(100vh - 70px);
         background-color: white;
-        margin-top: 70px;
-        box-shadow: 0 8px 4px 1px #d1515a;
         overflow-y: scroll;
         overflow-x: hidden;
         &::-webkit-scrollbar {
@@ -144,7 +141,7 @@ export default {
             flex-direction: column;
             align-items: center;
             background-color: #F4F4F4;
-            width: 550px;
+            max-width: 550px;
             margin: 50px auto;
             padding: 20px;
             border-radius: 8px;
@@ -197,6 +194,24 @@ export default {
                     box-shadow: none;
                     background-color: #aeaeb1;
                 }
+            }
+        }
+    }
+}
+@media all and (min-width: 1023px) {
+    .creating {
+        &Main {
+            z-index: 2;
+            max-width: 800px;
+            margin-top: 70px;
+            box-shadow: 0 8px 4px 1px #d1515a;
+            overflow: hidden;
+            height: calc(100vh - 70px);
+            &Head {
+                box-shadow: 0 10px 10px 6px rgba(249,249,249,0.97);
+            }
+            &List {
+                width: 800px;
             }
         }
     }

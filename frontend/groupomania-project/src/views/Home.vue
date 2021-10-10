@@ -100,30 +100,24 @@ export default {
     width: 100%;
     min-height: 100vh;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(249,249,249,1) 46%, #aeaeb1 100%);
-
     &Main {
         display: flex;
         align-items: center;
         flex-direction: column;
         position: relative;
-        z-index: 2;
-        width: 800px;
-        height: calc(100vh - 70px);
+        width: 100%;
         background-color: white;
-        margin-top: 70px;
-        box-shadow: 0 8px 4px 1px #d1515a;
-        overflow: hidden;
+        min-height: calc(100vh - 70px);
         &Head {
             z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 50px;
-            box-shadow: 0 10px 10px 6px rgba(249,249,249,0.97);
-            background-color: rgba(249,249,249,0.97);
             position: absolute;
             left: 0;
             right: 0;
+            background-color: rgba(249,249,249,0.97);
             & h2 {
                 width: fit-content;
                 user-select: none;
@@ -133,7 +127,6 @@ export default {
             display: flex;
             align-items: center;
             flex-direction: column;
-            width: 800px;
             overflow-y: scroll;
             overflow-x: hidden;
             &::-webkit-scrollbar {
@@ -145,11 +138,11 @@ export default {
             }
         }
         &Scrollback {
+            position: absolute;
             z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: absolute;
             top: 5px;
             height: 50px;
             width: 50px;
@@ -158,6 +151,24 @@ export default {
             color: white;
             font-size: 1.5em;
             cursor: pointer;
+        }
+    }
+}
+@media all and (min-width: 1023px) {
+    .home {
+        &Main {
+            z-index: 2;
+            max-width: 800px;
+            margin-top: 70px;
+            box-shadow: 0 8px 4px 1px #d1515a;
+            height: calc(100vh - 70px);
+            overflow: hidden;
+            &Head {
+                box-shadow: 0 10px 10px 6px rgba(249,249,249,0.97);
+            }
+            &List {
+                width: 800px;
+            }
         }
     }
 }
