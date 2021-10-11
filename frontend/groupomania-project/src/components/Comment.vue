@@ -25,7 +25,7 @@
         </div>
 
         <div class="commentPost">
-            <textarea v-model="commentaire" name="comment" required placeholder="Ecrivez un commentaire..." @input="commentValid()"></textarea>
+            <textarea v-model="commentaire" name="comment" aria-required="true" placeholder="Ecrivez un commentaire..." @input="commentValid()"></textarea>
             <button type="button" :disabled="!validated" @click="commentPost">
                 <i class="fas fa-plus"></i>
             </button>

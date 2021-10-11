@@ -9,11 +9,11 @@
             
             <form class="creatingMainForm" enctype="multipart/form-data">
                 <div class="creatingMainFormTitre">
-                    <input v-model="titre" type="text" name="titre" placeholder="Titre..." required @input="formValid()">
+                    <input v-model="titre" type="text" name="titre" placeholder="Titre..." aria-required="true" @input="formValid()">
                 </div>
 
                 <div class="creatingMainFormMedia">
-                    <input type="file" name="file" ref="file" accept=".png, .jpg, .jpeg, .gif" @change="fileSetting" required>
+                    <input type="file" name="file" ref="file" accept=".png, .jpg, .jpeg, .gif" @change="fileSetting" aria-required="true">
                 </div>
 
                 <img v-if="image.length > 0" :src="image" alt="aperçu media publication">

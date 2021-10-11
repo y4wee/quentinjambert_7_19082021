@@ -20,6 +20,7 @@
                         type="text"
                         name="name"
                         placeholder="Nom"
+                        aria-required="true"
                         @input="formValid()"
                     />
                 </div>
@@ -30,6 +31,7 @@
                         type="text"
                         name="firstName"
                         placeholder="Prénom"
+                        aria-required="true"
                         @input="formValid()"
                     />
                 </div>
@@ -40,6 +42,7 @@
                         type="email"
                         name="email"
                         placeholder="Email"
+                        aria-required="true"
                         @input="formValid()"
                     />
                 </div>
@@ -50,6 +53,7 @@
                         type="password"
                         name="password"
                         placeholder="Mot de passe"
+                        aria-required="true"
                         @input="formValid()"
                     />
                     <p v-if="mode == 'signup'">
@@ -162,7 +166,7 @@ export default {
             return true;
         },
         nameValid: function(name) {
-            let nameRgex = /^([A-Za-z ,.'`-]{2,30})$/gm;
+            let nameRgex = /^([A-Za-z ,.'`-éèê]{2,30})$/gm;
             if (!nameRgex.test(name)) {
                 return false;
             }

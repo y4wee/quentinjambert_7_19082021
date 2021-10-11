@@ -30,7 +30,7 @@
                     <div v-if="confirmation" class="compteMainInfoDeleteOff" @click="confirmationDelete()">Annuler</div>
                     <div v-else class="compteMainInfoDeleteOn" @click="confirmationDelete()">Supprimer ce compte</div>
 
-                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm" autofocus @input="passwordValid()">
+                    <input v-if="confirmation" v-model="password" type="password" placeholder="password to confirm" autofocus aria-required="true" @input="passwordValid()">
 
                     <button v-if="confirmation" type="button" :disabled="!validated" @click="userDelete()">
                         <i class="fas fa-trash-alt"></i>
